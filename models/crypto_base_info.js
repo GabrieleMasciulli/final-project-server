@@ -1,13 +1,19 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
 
-const misc_dataSchema = new mongoose.Schema({
-  categories: [String],
-})
+const misc_dataSchema = new mongoose.Schema(
+  {
+    categories: [String],
+  },
+  { _id: false }
+)
 
-const metricSchema = new mongoose.Schema({
-  misc_data: misc_dataSchema,
-})
+const metricSchema = new mongoose.Schema(
+  {
+    misc_data: misc_dataSchema,
+  },
+  { _id: false }
+)
 
 const cryptoBaseInfoSchema = new mongoose.Schema({
   symbol: String,
