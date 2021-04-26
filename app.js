@@ -1,11 +1,11 @@
+const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const cryptosRouter = require('./controllers/cryptos')
-const logger = require('./utils/logger')
-const config = require('./utils/config')
-const mongoose = require('mongoose')
+const cryptoRouter = require('./controllers/cryptos')
 const middleware = require('./utils/middleware')
+const logger = require('./utils/logger')
+const mongoose = require('mongoose')
 
 logger.info('Connecting to', config.MONGODB_URI)
 
@@ -23,12 +23,16 @@ mongoose
     logger.error('error connecting to MongoDB', error.message)
   })
 
-app.use(cors)
+app.use(cors())
 app.use(express.static('build'))
-app.use(express.json())
+
+//increasing the limit of data which can pass through express server
+app.use(express.json({ limit: '50mb' }))
+app.use(express.urlencoded({ limit: '50mb', extended: true }))
+
 app.use(middleware.requestLogger)
 
-app.use('/api/cryptos', cryptosRouter)
+app.use('/api/cryptos', cryptoRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
