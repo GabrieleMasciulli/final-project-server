@@ -7,12 +7,20 @@ cryptosRouter.get('/', (req, res) => {
   })
 })
 
-cryptosRouter.post('/baseinfo/all', (req, res) => {
+cryptosRouter.post('/baseinfo/all', (req, res, next) => {
   const data = req.body.data
 
   data.map(crypto => {
     const newCryptoBaseInfo = new CryptoBaseInfo(crypto)
-    console.log(newCryptoBaseInfo)
+
+    newCryptoBaseInfo
+      .save()
+      .then(returnedOject => {
+        res.json(returnedOject)
+      })
+      .catch(error => {
+        next(error)
+      })
   })
 
   res.status(202).end()
