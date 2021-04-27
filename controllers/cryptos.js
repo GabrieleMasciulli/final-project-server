@@ -8,8 +8,33 @@ cryptosRouter.get('/baseinfo/all', (req, res, next) => {
   })
 })
 
-cryptosRouter.get('/baseinfo/:id', (req, res, next) => {
-  
+cryptosRouter.get('/baseinfo/id/:id', (req, res, next) => {
+  CryptoBaseInfo.findById(req.params.id)
+    .then(crypto => {
+      if (crypto) {
+        res.json(crypto)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => {
+      next(error)
+    })
+})
+
+cryptosRouter.get('/baseinfo/symbol/:symbol', (req, res, next) => {
+  const symbol = req.params.symbol.toUpperCase()
+  CryptoBaseInfo.find({ symbol: symbol })
+    .then(crypto => {
+      if (crypto) {
+        res.json(crypto)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => {
+      next(error)
+    })
 })
 
 //add logo urls to each crypto in the database
@@ -27,8 +52,8 @@ cryptosRouter.post('/baseinfo/all', (req, res, next) => {
 
     newCryptoBaseInfo
       .save()
-      .then(returnedObject => {
-        console.log(returnedObject)
+      .then(crypto => {
+        console.log(crypto)
       })
       .catch(error => {
         next(error)
