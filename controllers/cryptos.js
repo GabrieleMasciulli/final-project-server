@@ -8,14 +8,22 @@ cryptosRouter.get('/baseinfo/all', (req, res, next) => {
   })
 })
 
+cryptosRouter.get('/baseinfo/:id', (req, res, next) => {
+  
+})
+
 //add logo urls to each crypto in the database
 cryptosRouter.put('/baseinfo/all/urls', (req, res, next) => {})
 
+//admin post request to upload all cryptos in bulk
 cryptosRouter.post('/baseinfo/all', (req, res, next) => {
   const data = req.body.data
 
   data.map(crypto => {
-    const newCryptoBaseInfo = new CryptoBaseInfo(crypto)
+    // mongodb ids were creating conflict with coinMarketCap's ids
+    let newCrypto = { ...crypto, coinmarketcap_id: crypto.id }
+
+    const newCryptoBaseInfo = new CryptoBaseInfo(newCrypto)
 
     newCryptoBaseInfo
       .save()

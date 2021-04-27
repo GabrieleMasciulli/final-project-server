@@ -2,7 +2,7 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 
 const cryptoBaseInfoSchema = new mongoose.Schema({
-  id: {
+  coinmarketcap_id: {
     type: 'Number',
   },
   name: {
