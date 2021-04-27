@@ -1,11 +1,15 @@
+/* eslint-disable no-unused-vars */
 const cryptosRouter = require('express').Router()
 const CryptoBaseInfo = require('../models/crypto_base_info')
 
-cryptosRouter.get('/', (req, res) => {
-  res.json({
-    test: 'test get request',
+cryptosRouter.get('/baseinfo/all', (req, res, next) => {
+  CryptoBaseInfo.find({}).then(baseinfos => {
+    res.json(baseinfos)
   })
 })
+
+//add logo urls to each crypto in the database
+cryptosRouter.put('/baseinfo/all/urls', (req, res, next) => {})
 
 cryptosRouter.post('/baseinfo/all', (req, res, next) => {
   const data = req.body.data
@@ -15,8 +19,8 @@ cryptosRouter.post('/baseinfo/all', (req, res, next) => {
 
     newCryptoBaseInfo
       .save()
-      .then(returnedOject => {
-        res.json(returnedOject)
+      .then(returnedObject => {
+        console.log(returnedObject)
       })
       .catch(error => {
         next(error)

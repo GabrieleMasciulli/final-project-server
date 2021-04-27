@@ -1,26 +1,34 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
 
-const misc_dataSchema = new mongoose.Schema(
-  {
-    categories: [String],
-  },
-  { _id: false }
-)
-
-const metricSchema = new mongoose.Schema(
-  {
-    misc_data: misc_dataSchema,
-  },
-  { _id: false }
-)
-
 const cryptoBaseInfoSchema = new mongoose.Schema({
-  symbol: String,
-  slug: String,
-  name: String,
-  logo: String,
-  metrics: metricSchema,
+  id: {
+    type: 'Number',
+  },
+  name: {
+    type: 'String',
+  },
+  symbol: {
+    type: 'String',
+  },
+  slug: {
+    type: 'String',
+  },
+  num_market_pairs: {
+    type: 'Number',
+  },
+  date_added: {
+    type: 'Date',
+  },
+  tags: {
+    type: ['String'],
+  },
+  max_supply: {
+    type: 'Number',
+  },
+  last_updated: {
+    type: 'Date',
+  },
 })
 
 cryptoBaseInfoSchema.set('toJSON', {
