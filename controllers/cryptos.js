@@ -24,10 +24,27 @@ cryptosRouter.get('/baseinfo/id/:id', (req, res, next) => {
 
 cryptosRouter.get('/baseinfo/symbol/:symbol', (req, res, next) => {
   const symbol = req.params.symbol.toUpperCase()
+
   CryptoBaseInfo.find({ symbol: symbol })
     .then(crypto => {
       if (crypto) {
         res.json(crypto)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => {
+      next(error)
+    })
+})
+
+cryptosRouter.get('/baseinfo/slug/:slug', (req, res, next) => {
+  const slug = req.params.slug.toLowerCase()
+
+  CryptoBaseInfo.find({ slug: slug })
+    .then(crypto => {
+      if (crypto) {
+        res.josn(crypto)
       } else {
         res.status(404).end()
       }
