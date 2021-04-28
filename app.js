@@ -2,10 +2,11 @@ const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const cryptoRouter = require('./controllers/cryptos')
+const cryptoRouter = require('./controllers/crypto')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const compression = require('compression')
 
 logger.info('Connecting to', config.MONGODB_URI)
 
@@ -36,5 +37,7 @@ app.use('/api/cryptos', cryptoRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
+
+app.use(compression())
 
 module.exports = app

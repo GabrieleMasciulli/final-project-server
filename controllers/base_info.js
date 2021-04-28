@@ -54,9 +54,6 @@ cryptosRouter.get('/baseinfo/slug/:slug', (req, res, next) => {
     })
 })
 
-//add logo urls to each crypto in the database
-cryptosRouter.put('/baseinfo/all/urls', (req, res, next) => {})
-
 //admin post request to upload all cryptos in bulk
 cryptosRouter.post('/baseinfo/all', (req, res, next) => {
   const data = req.body.data
