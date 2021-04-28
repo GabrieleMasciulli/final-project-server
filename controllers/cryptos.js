@@ -27,7 +27,7 @@ cryptosRouter.get('/baseinfo/symbol/:symbol', (req, res, next) => {
 
   CryptoBaseInfo.find({ symbol: symbol })
     .then(crypto => {
-      if (crypto) {
+      if (crypto.length > 0) {
         res.json(crypto)
       } else {
         res.status(404).end()
@@ -43,8 +43,8 @@ cryptosRouter.get('/baseinfo/slug/:slug', (req, res, next) => {
 
   CryptoBaseInfo.find({ slug: slug })
     .then(crypto => {
-      if (crypto) {
-        res.josn(crypto)
+      if (crypto.length > 0) {
+        res.json(crypto)
       } else {
         res.status(404).end()
       }
