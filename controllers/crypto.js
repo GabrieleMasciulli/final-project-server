@@ -9,7 +9,7 @@ cryptoRouter.get('/', (req, res) => {
   })
 })
 
-cryptoRouter.get('/metadata/:order/:number/:page', (req, res, next) => {
+cryptoRouter.get('/info/:order/:number/:page', (req, res, next) => {
   const order = req.params.order
   const number = req.params.number
   const page = req.params.page
@@ -22,6 +22,35 @@ cryptoRouter.get('/metadata/:order/:number/:page', (req, res, next) => {
     })
 })
 
+cryptoRouter.get('/metadata/:id', (req, res, next) => {
+  const id = req.params.id
+
+  Metadata.find({ coingecko_id: id }).then(crypto => {
+    console.log(crypto)
+    if (crypto.length > 0) {
+      console.log('inside if')
+      res.status(202).json(crypto)
+    } else {
+      console.log('inside else')
+      coinGecko
+        .getMetadata(id)
+        .then(crypto => {
+          const alteredCrypto = { ...crypto, coingecko_id: crypto.id }
+          const newCrypto = new Metadata(alteredCrypto)
+
+          newCrypto
+            .save()
+            .then(savedMetadata => {
+              res.status(202).json(savedMetadata)
+            })
+            .catch(error => next(error))
+        })
+        .catch(() => next({ name: 'CastError' }))
+    }
+  })
+})
+
+//developement ONLY!!!
 //admin post request to upload all cryptos in bulk
 cryptoRouter.post('/', (req, res, next) => {
   const data = req.body
@@ -41,29 +70,6 @@ cryptoRouter.post('/', (req, res, next) => {
   })
 
   res.status(202).end()
-})
-
-cryptoRouter.post('/metadata/all', (req, res, next) => {
-  Crypto.find({})
-    .then(cryptos => {
-      cryptos.map(crypto => {
-        coinGecko.getMetadata(crypto.coingecko_id).then(metadata => {
-          const alteredMetadata = { ...metadata, coingecko_id: metadata.id }
-          const newMetadata = new Metadata(alteredMetadata)
-
-          newMetadata
-            .save()
-            .then()
-            .catch(error => {
-              next(error)
-            })
-        })
-      })
-      res.status(202).end()
-    })
-    .catch(error => {
-      next(error)
-    })
 })
 
 module.exports = cryptoRouter

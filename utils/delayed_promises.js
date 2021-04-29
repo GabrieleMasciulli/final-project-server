@@ -48,3 +48,54 @@ async function retryP({ action, interval, backoff, attempts }) {
     })
   }
 }
+
+//logic:
+
+// cryptoRouter.post('/metadata/all', (req, res, next) => {
+//   Crypto.find({})
+//     .sort()
+//     .skip(0)
+//     .limit(200)
+//     .then(cryptos => {
+//       let count = 1
+
+//       const ids = cryptos.map(crypto => crypto.coingecko_id)
+
+//       const metadatas = mapP(
+//         ids,
+//         id => {
+//           console.log('coin: ', id)
+//           console.log('Number: ', count)
+
+//           count += 1
+
+//           return retryP({
+//             attempts: 3,
+//             interval: 1000,
+//             backoff: 2,
+//             action: axios.get(
+//               `https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`
+//             ),
+//           })
+//         },
+//         10
+//       )
+//       return metadatas
+//     })
+//     .then(metadatas => {
+//       metadatas.map(metadata => {
+//         const alteredMetadata = { ...metadata, coingecko_id: metadata.id }
+//         const newMetadata = new Metadata(alteredMetadata)
+
+//         newMetadata
+//           .save()
+//           .then()
+//           .catch(error => next(error))
+//       })
+
+//       res.status(202).end()
+//     })
+//     .catch(error => {
+//       next(error)
+//     })
+// })
