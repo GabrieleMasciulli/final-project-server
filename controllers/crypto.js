@@ -26,12 +26,9 @@ cryptoRouter.get('/metadata/:id', (req, res, next) => {
   const id = req.params.id
 
   Metadata.find({ coingecko_id: id }).then(crypto => {
-    console.log(crypto)
     if (crypto.length > 0) {
-      console.log('inside if')
       res.status(202).json(crypto)
     } else {
-      console.log('inside else')
       coinGecko
         .getMetadata(id)
         .then(crypto => {
