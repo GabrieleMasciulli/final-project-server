@@ -5,7 +5,7 @@ const coinGecko = require('../utils/coingecko')
 
 cryptoRouter.get('/', (req, res) => {
   Crypto.find({}).then(response => {
-    res.json(response)
+    res.json({ tot: response.length })
   })
 })
 
