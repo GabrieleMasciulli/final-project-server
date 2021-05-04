@@ -1,9 +1,8 @@
 const axios = require('axios')
-const { response } = require('express')
 
 const getBaseData = (order, number, page) => {
   const request = axios.get(
-    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${order}&per_page=${number}&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`
+    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${order}&per_page=${number}&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
   )
 
   return request.then(response => response.data)

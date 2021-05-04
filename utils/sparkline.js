@@ -57,7 +57,7 @@ const generateSparkline = (trend, dataset) => {
     .setHeight(54)
     .setBackgroundColor('transparent')
 
-  const url = sparkline.getShortUrl().then(link => link)
+  const url = sparkline.getUrl()
 
   return url
 }

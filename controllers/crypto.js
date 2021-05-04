@@ -17,10 +17,18 @@ cryptoRouter.get('/info/:order/:number/:page', (req, res, next) => {
 
   coinGecko
     .getBaseData(order, number, page)
-    .then(response => res.json(response))
-    .catch(error => {
-      next(error)
+    .then(cryptos => {
+      const alteredCryptos = cryptos.map(crypto => {
+        const sparklineData = crypto.sparkline_in_7d.price
+        const trend =
+          crypto.price_change_percentage_7d_in_currency > 0 ? 'up' : 'down'
+        const url = sparklineGenerator.generateSparkline(trend, sparklineData)
+
+        return { ...crypto, sparkline_url: url }
+      })
+      res.status(202).json(alteredCryptos)
     })
+    .catch(() => next({ name: 'CastError' }))
 })
 
 cryptoRouter.get('/metadata/:id', (req, res, next) => {
@@ -48,7 +56,7 @@ cryptoRouter.get('/metadata/:id', (req, res, next) => {
   })
 })
 
-//generating 7day sparklines
+//generating 7day sparklines for a single crypto
 cryptoRouter.get('/img/generated/sparkline/:id', (req, res, next) => {
   const id = req.params.id
 
@@ -73,6 +81,28 @@ cryptoRouter.get('/img/generated/sparkline/:id', (req, res, next) => {
       next(error)
     })
 })
+
+//generating just 7day sparklines for a whole page of cryptos
+cryptoRouter.get(
+  '/img/generated/sparklines/:order/:number/:page',
+  (req, res, next) => {
+    const order = req.params.order
+    const number = req.params.number
+    const page = req.params.page
+
+    coinGecko.getBaseData(order, number, page).then(cryptos => {
+      const urls = []
+      cryptos.map(crypto => {
+        const sparklineData = crypto.sparkline_in_7d.price
+        const trend =
+          crypto.price_change_percentage_7d_in_currency > 0 ? 'up' : 'down'
+        const url = sparklineGenerator.generateSparkline(trend, sparklineData)
+        urls.push({ id: crypto.id, sparkline_url: url })
+      })
+      res.status(202).json(urls)
+    })
+  }
+)
 
 //developement ONLY!!!
 //admin post request to upload all cryptos in bulk
