@@ -16,4 +16,12 @@ const getMetadata = id => {
   return request.then(response => response.data)
 }
 
-module.exports = { getBaseData, getMetadata }
+const getSparkline = id => {
+  const request = axios.get(
+    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${id}&sparkline=true`
+  )
+
+  return request.then(response => response.data[0].sparkline_in_7d.price)
+}
+
+module.exports = { getBaseData, getMetadata, getSparkline }
