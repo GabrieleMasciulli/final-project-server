@@ -2,6 +2,7 @@ const cryptoRouter = require('express').Router()
 const Crypto = require('../models/crypto')
 const Metadata = require('../models/metadata')
 const coinGecko = require('../utils/coingecko')
+const sparklineGenerator = require('../utils/sparkline')
 
 cryptoRouter.get('/', (req, res) => {
   Crypto.find({}).then(response => {
@@ -45,6 +46,32 @@ cryptoRouter.get('/metadata/:id', (req, res, next) => {
         .catch(() => next({ name: 'CastError' }))
     }
   })
+})
+
+//generating 7day sparklines
+cryptoRouter.get('/img/generated/sparkline/:id', (req, res, next) => {
+  const id = req.params.id
+
+  coinGecko
+    .getSparkline(id)
+    .then(data => {
+      if (!data) {
+        next({ name: 'CastError' })
+      } else {
+        const sparklineData = data.sparkline_in_7d.price
+        const trend =
+          data.price_change_percentage_7d_in_currency > 0 ? 'up' : 'down'
+
+        sparklineGenerator.generateSparkline(trend, sparklineData).then(url =>
+          res.status(200).json({
+            image: url,
+          })
+        )
+      }
+    })
+    .catch(error => {
+      next(error)
+    })
 })
 
 //developement ONLY!!!
