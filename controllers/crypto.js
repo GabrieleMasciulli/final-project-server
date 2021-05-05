@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const cryptoRouter = require('express').Router()
 const Crypto = require('../models/crypto')
 const Metadata = require('../models/metadata')
