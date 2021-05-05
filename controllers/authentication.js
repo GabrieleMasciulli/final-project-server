@@ -1,10 +1,10 @@
 /* eslint-disable quotes */
-const authRouter = require('express').Router()
+const authenticationRouter = require('express').Router()
 const verifySignUp = require('../middlewares/verifySignUp')
-const authMethods = require('./auth')
+const authenticationMethods = require('../middlewares/auth.index')
 const Role = require('../models/role')
 
-authRouter.use((req, res, next) => {
+authenticationRouter.use((req, res, next) => {
   res.header(
     'Access-Control-Allow-Headers',
     'x-access-token, Origin, Content-Type, Accept'
@@ -12,13 +12,16 @@ authRouter.use((req, res, next) => {
   next()
 })
 
-authRouter.post(
+authenticationRouter.post(
   '/signup',
   [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],
-  authMethods.signup
+  authenticationMethods.signup
 )
 
+authenticationRouter.post('/signin', authenticationMethods.signin)
+
 //DEVELOPEMENT ONLY, RENDERING INITIAL ROLES IN THE DATABASE
+// eslint-disable-next-line no-unused-vars
 function initial() {
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
@@ -55,4 +58,4 @@ function initial() {
   })
 }
 
-module.exports = authRouter
+module.exports = authenticationRouter

@@ -1,4 +1,4 @@
-const config = require('../utils/auth.config')
+const secretKey = require('../utils/config').AUTH_SECRET_KEY
 const User = require('../models/user')
 const Role = require('../models/role')
 
@@ -87,7 +87,7 @@ const signin = (req, res) => {
         })
       }
 
-      var token = jwt.sign({ id: user.id }, config.secret, {
+      var token = jwt.sign({ id: user.id }, secretKey, {
         expiresIn: 86400, // 24 hours
       })
 
