@@ -105,6 +105,18 @@ cryptoRouter.get(
   }
 )
 
+cryptoRouter.get('/market_chart/:id/:days', (req, res, next) => {
+  const id = req.params.id
+  const days = req.params.days
+
+  coinGecko
+    .getMarketChart(id, days)
+    .then(cryptos => {
+      res.status(202).json(cryptos)
+    })
+    .catch(() => next({ name: 'CastError' }))
+})
+
 //developement ONLY!!!
 //admin post request to upload all cryptos in bulk
 cryptoRouter.post('/', (req, res, next) => {

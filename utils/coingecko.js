@@ -24,4 +24,12 @@ const getSparkline = id => {
   return request.then(response => response.data[0])
 }
 
-module.exports = { getBaseData, getMetadata, getSparkline }
+const getMarketChart = (id, days) => {
+  const request = axios.get(
+    `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}`
+  )
+
+  return request.then(response => response.data)
+}
+
+module.exports = { getBaseData, getMetadata, getSparkline, getMarketChart }
