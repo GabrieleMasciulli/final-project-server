@@ -36,8 +36,8 @@ mongoose
 app.use(compression())
 app.use(cors())
 
+app.use(express.static('build'))
 // if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static('build'))
 
 //   // Express serve up index.html file if it doesn't recognize route
 //   app.get('/home', (req, res) => {
