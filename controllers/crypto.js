@@ -117,6 +117,19 @@ cryptoRouter.get('/market_chart/:id/:days', (req, res, next) => {
     .catch(() => next({ name: 'CastError' }))
 })
 
+// data to display in the statistics right pane on the detail page
+
+cryptoRouter.get('/stats/:id', (req, res, next) => {
+  const id = req.params.id
+
+  coinGecko
+    .getStats(id)
+    .then(stats => {
+      res.status(202).json(stats)
+    })
+    .catch(() => next({ name: 'CastError' }))
+})
+
 //developement ONLY!!!
 //admin post request to upload all cryptos in bulk
 cryptoRouter.post('/', (req, res, next) => {
