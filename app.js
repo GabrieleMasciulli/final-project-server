@@ -17,6 +17,8 @@ const devUtilsMiddleware = require('./middlewares/dev_utils')
 //utils
 const logger = require('./utils/logger')
 
+app.use(express.static('build'))
+
 logger.info('Connecting to', config.MONGODB_URI)
 
 mongoose
@@ -36,7 +38,6 @@ mongoose
 app.use(compression())
 app.use(cors())
 
-app.use(express.static('build'))
 // if (process.env.NODE_ENV === 'production') {
 //   // Express serve up index.html file if it doesn't recognize route
 //   app.get('/home', (req, res) => {
