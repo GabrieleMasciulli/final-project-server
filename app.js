@@ -41,12 +41,11 @@ if (process.env.NODE_ENV === 'production') {
 
   // Express serve up index.html file if it doesn't recognize route
   app.get('/home', (req, res) => {
-    console.log(__dirname)
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
   })
 
   app.get('/detail/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
   })
 }
 
