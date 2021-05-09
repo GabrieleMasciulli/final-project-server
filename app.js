@@ -36,17 +36,17 @@ mongoose
 app.use(compression())
 app.use(cors())
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('build'))
-  // Express serve up index.html file if it doesn't recognize route
-  app.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
-  })
+app.use(express.static('build'))
+// if (process.env.NODE_ENV === 'production') {
+//   // Express serve up index.html file if it doesn't recognize route
+//   app.get('/home', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'))
+//   })
 
-  app.get('/detail/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
-  })
-}
+//   app.get('/detail/*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'))
+//   })
+// }
 
 //increasing the limit of data which can pass through express server
 app.use(express.json({ limit: '50mb' }))
