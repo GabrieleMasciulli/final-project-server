@@ -17,8 +17,6 @@ const devUtilsMiddleware = require('./middlewares/dev_utils')
 //utils
 const logger = require('./utils/logger')
 
-app.use(express.static('build'))
-
 logger.info('Connecting to', config.MONGODB_URI)
 
 mongoose
@@ -38,16 +36,18 @@ mongoose
 app.use(compression())
 app.use(cors())
 
-// if (process.env.NODE_ENV === 'production') {
-//   // Express serve up index.html file if it doesn't recognize route
-//   app.get('/home', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'))
-//   })
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('build'))
 
-//   app.get('/detail/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'))
-//   })
-// }
+  // Express serve up index.html file if it doesn't recognize route
+  app.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+  })
+
+  app.get('/detail/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+  })
+}
 
 //increasing the limit of data which can pass through express server
 app.use(express.json({ limit: '50mb' }))
