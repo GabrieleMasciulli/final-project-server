@@ -40,10 +40,17 @@ const getStats = id => {
   return request.then(response => response.data)
 }
 
+const getGlobals = () => {
+  const request = axios.get('https://api.coingecko.com/api/v3/global')
+
+  return request.then(response => response.data)
+}
+
 module.exports = {
   getBaseData,
   getMetadata,
   getSparkline,
   getMarketChart,
   getStats,
+  getGlobals,
 }
