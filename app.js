@@ -11,6 +11,7 @@ const cryptoRouter = require('./controllers/crypto')
 const authenticationRouter = require('./controllers/authentication')
 const authorizationRouter = require('./controllers/authorization')
 const globalDataRouter = require('./controllers/global')
+const searchCryptosRouter = require('./controllers/cryptoSearch')
 
 //middlewares
 const devUtilsMiddleware = require('./middlewares/dev_utils')
@@ -48,6 +49,10 @@ app.get('/detail/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
+app.get('/portfolio/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
+
 //increasing the limit of data which can pass through express server
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
@@ -58,6 +63,7 @@ app.use('/api/cryptos', cryptoRouter)
 app.use('/api/auth', authenticationRouter)
 app.use('/api/test', authorizationRouter)
 app.use('/api/global', globalDataRouter)
+app.use('/api/search', searchCryptosRouter)
 
 app.use(devUtilsMiddleware.unknownEndpoint)
 app.use(devUtilsMiddleware.errorHandler)
