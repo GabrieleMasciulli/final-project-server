@@ -46,6 +46,14 @@ const getGlobals = () => {
   return request.then(response => response.data)
 }
 
+const getBasicSearchResults = (page, number) => {
+  const request = axios.get(
+    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${number}&page=${page}&sparkline=false`
+  )
+
+  return request.then(response => response.data)
+}
+
 module.exports = {
   getBaseData,
   getMetadata,
@@ -53,4 +61,5 @@ module.exports = {
   getMarketChart,
   getStats,
   getGlobals,
+  getBasicSearchResults,
 }
