@@ -12,6 +12,7 @@ const authenticationRouter = require('./controllers/authentication')
 const authorizationRouter = require('./controllers/authorization')
 const globalDataRouter = require('./controllers/global')
 const searchCryptosRouter = require('./controllers/cryptoSearch')
+const transactionRouter = require('./controllers/transactions')
 
 //middlewares
 const devUtilsMiddleware = require('./middlewares/dev_utils')
@@ -64,6 +65,7 @@ app.use('/api/auth', authenticationRouter)
 app.use('/api/test', authorizationRouter)
 app.use('/api/global', globalDataRouter)
 app.use('/api/search', searchCryptosRouter)
+app.use('/api/transaction', transactionRouter)
 
 app.use(devUtilsMiddleware.unknownEndpoint)
 app.use(devUtilsMiddleware.errorHandler)
