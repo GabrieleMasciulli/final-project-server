@@ -16,7 +16,6 @@ transactionsRouter.post('/', (req, res) => {
     Position.findOne({
       $and: [{ coin_id: body.coin_id }, { user: body.user_id }],
     }).then(position => {
-      console.log(position)
       if (!position) {
         const position = new Position({
           type: body.type,
