@@ -9,7 +9,6 @@ const transactionSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    max: () => Date.now(),
   },
   quantity: {
     type: Number,
