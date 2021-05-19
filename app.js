@@ -50,7 +50,7 @@ app.get('/detail/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
-app.get('/portfolio/*', (req, res) => {
+app.get('/portfolio', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
