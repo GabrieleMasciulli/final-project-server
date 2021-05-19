@@ -65,7 +65,7 @@ transactionsRouter.get('/all', (req, res, next) => {
 })
 
 transactionsRouter.get('/assets', (req, res, next) => {
-  const user_id = req.body.user_id
+  const user_id = req.query.user
 
   const yesterday = dateUtility.getYesterdayDate()
 
