@@ -1,11 +1,19 @@
 const axios = require('axios')
 
-const getSimplePrice = id => {
-  const request = axios.get(
+const getSimplePrice = async id => {
+  const response = await axios.get(
     `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`
   )
 
-  return request.then(response => response.data)
+  return response.data
+}
+
+const getPriceFromDate = async (id, date) => {
+  const response = await axios.get(
+    `https://api.coingecko.com/api/v3/coins/${id}/history?date=${date}&localization=false`
+  )
+
+  return response.data
 }
 
 const getBaseData = (order, number, page) => {
@@ -64,6 +72,7 @@ const getBasicSearchResults = (page, number) => {
 
 module.exports = {
   getSimplePrice,
+  getPriceFromDate,
   getBaseData,
   getMetadata,
   getSparkline,
