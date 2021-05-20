@@ -84,11 +84,11 @@ cryptoRouter.get('/img/generated/sparkline/:id', (req, res, next) => {
         const trend =
           data.price_change_percentage_7d_in_currency > 0 ? 'up' : 'down'
 
-        sparklineGenerator.generateSparkline(trend, sparklineData).then(url =>
-          res.status(200).json({
-            image: url,
-          })
-        )
+        const url = sparklineGenerator.generateSparkline(trend, sparklineData)
+
+        res.status(200).json({
+          image: url,
+        })
       }
     })
     .catch(error => {
