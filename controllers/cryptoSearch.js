@@ -22,9 +22,11 @@ searchRouter.get('/:query', (req, res) => {
       { symbol: { $regex: new RegExp(query, 'i') } },
       { name: { $regex: new RegExp(query, 'i') } },
     ],
-  }).then(results => {
-    res.status(202).json(results)
   })
+    .limit(100)
+    .then(results => {
+      res.status(202).json(results)
+    })
 })
 
 //DEVELOPEMENT ONLY!!! DON'T USE
