@@ -24,6 +24,21 @@ cryptoRouter.get('/price/:id', (req, res, next) => {
   })
 })
 
+cryptoRouter.get('/detail/:id', (req, res, next) => {
+  const id = req.params.id
+
+  coinGecko
+    .getBaseDataFromId(id)
+    .then(crypto => {
+      if (crypto) {
+        res.status(202).json(crypto)
+      } else {
+        next({ name: 'CastError' })
+      }
+    })
+    .catch(error => next(error))
+})
+
 cryptoRouter.get('/info/:order/:number/:page', (req, res, next) => {
   const order = req.params.order
   const number = req.params.number

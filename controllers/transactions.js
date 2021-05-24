@@ -56,10 +56,18 @@ transactionsRouter.post('/', (req, res) => {
 // getting all positions and transactions for a user
 transactionsRouter.get('/all', (req, res, next) => {
   const user_id = req.body.user_id
+  if (!user_id) {
+    res.status(400).json({ error: 'Invalid id' })
+    return
+  }
 
   Position.find({ user: user_id })
     .then(positions => {
-      res.status(202).json(positions)
+      if (positions) {
+        res.status(202).json(positions)
+      } else {
+        next({ name: 'CastError' })
+      }
     })
     .catch(() => next({ name: 'CastError' }))
 })
@@ -98,14 +106,15 @@ transactionsRouter.get('/assets', (req, res, next) => {
         transactions.map(transaction => {
           const quantity = transaction.quantity
           const price = transaction.price
+          const type = transaction.type
 
           holding_in_crypto =
-            transaction.type === 'buy'
+            type === 'buy'
               ? (holding_in_crypto += quantity)
               : (holding_in_crypto -= quantity)
 
           total_open_holding =
-            transaction.type === 'buy'
+            type === 'buy'
               ? (total_open_holding += quantity * price)
               : (total_open_holding -= quantity * price)
         })

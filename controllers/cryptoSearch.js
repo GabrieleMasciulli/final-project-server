@@ -3,9 +3,11 @@ const searchRouter = require('express').Router()
 const coinGecko = require('../utils/coingecko')
 const SearchResult = require('../models/searchResult')
 
-searchRouter.get('/first', (req, res) => {
+searchRouter.get('/first/:limit', (req, res) => {
+  const limit = parseInt(req.params.limit)
+
   SearchResult.find({})
-    .limit(100)
+    .limit(limit)
     .then(results => {
       res.status(200).json(results)
     })

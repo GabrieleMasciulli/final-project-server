@@ -15,7 +15,7 @@ const searchCryptosRouter = require('./controllers/cryptoSearch')
 const transactionRouter = require('./controllers/transactions')
 
 //middlewares
-const devUtilsMiddleware = require('./middlewares/dev_utils')
+const devUtilsMiddleware = require('./utils/dev_utils')
 
 //utils
 const logger = require('./utils/logger')
