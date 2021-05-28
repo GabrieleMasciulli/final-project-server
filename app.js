@@ -8,6 +8,7 @@ const path = require('path')
 
 //routers
 const cryptoRouter = require('./controllers/crypto')
+const chartRouter = require('./controllers/charts')
 const authenticationRouter = require('./controllers/authentication')
 const authorizationRouter = require('./controllers/authorization')
 const globalDataRouter = require('./controllers/global')
@@ -61,6 +62,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(devUtilsMiddleware.requestLogger)
 
 app.use('/api/cryptos', cryptoRouter)
+app.use('/api/chart', chartRouter)
 app.use('/api/auth', authenticationRouter)
 app.use('/api/test', authorizationRouter)
 app.use('/api/global', globalDataRouter)
