@@ -3,7 +3,7 @@ const ROLES = ['user', 'admin', 'moderator']
 const User = require('../models/user')
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
-  logger.info(req.body)
+  // logger.info(req.body)
 
   // Username
   User.findOne({
