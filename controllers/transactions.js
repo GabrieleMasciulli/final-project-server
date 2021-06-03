@@ -74,4 +74,6 @@ transactionsRouter.get('/assets', portfolioUtility.portfolioAssets)
 
 transactionsRouter.get('/balance', portfolioUtility.portfolioBalance)
 
+transactionsRouter.get('/pie', portfolioUtility.portfolioPieChart)
+
 module.exports = transactionsRouter
