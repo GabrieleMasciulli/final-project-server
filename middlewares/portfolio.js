@@ -1,5 +1,4 @@
 const Position = require('../models/position')
-const User = require('../models/user')
 const SearchResult = require('../models/searchResult')
 const coinGecko = require('../utils/coingecko')
 const dateUtility = require('../utils/date.utility')
@@ -78,7 +77,7 @@ const portfolioAssets = (req, res, next) => {
     .catch(() => next({ name: 'CastError' }))
 }
 
-const portfolioBalance = async (req, res, next) => {
+const portfolioBalance = async (req, res) => {
   const user_id = req.query.user
   const yesterday = dateUtility.getYesterdayDate()
 
@@ -128,7 +127,7 @@ const portfolioBalance = async (req, res, next) => {
   })
 }
 
-const portfolioPieChart = async (req, res, next) => {
+const portfolioPieChart = async (req, res) => {
   const user_id = req.query.user
 
   if (!user_id) {
@@ -138,8 +137,7 @@ const portfolioPieChart = async (req, res, next) => {
 
   const positions = await Position.find({ user: user_id })
 
-  let labels = []
-  let series = []
+  let holdings = []
 
   await Promise.all(
     positions.map(async pos => {
@@ -147,7 +145,6 @@ const portfolioPieChart = async (req, res, next) => {
       const coin = await SearchResult.findOne({
         coingecko_id: pos.coin_id,
       })
-      labels.push(coin.symbol)
 
       let coin_holding = 0
       let last_price = await coinGecko.getSimplePrice(coin_id)
@@ -163,9 +160,18 @@ const portfolioPieChart = async (req, res, next) => {
             : (coin_holding -= quantity)
       })
 
-      series.push(coin_holding * last_price)
+      holdings.push({
+        label: coin.symbol,
+        value: coin_holding * last_price,
+      })
     })
   )
+
+  //sorting holdings for marketcap descending
+  const sorted_holdings = holdings.sort(({ value: a }, { value: b }) => b - a)
+
+  const labels = sorted_holdings.map(holding => holding.label)
+  const series = sorted_holdings.map(holding => holding.value)
 
   res.status(200).json({
     labels: labels,
