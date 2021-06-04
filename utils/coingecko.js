@@ -16,66 +16,66 @@ const getPriceFromDate = async (id, date) => {
   return response.data
 }
 
-const getBaseDataFromId = id => {
-  const request = axios.get(
+const getBaseDataFromId = async id => {
+  const response = await axios.get(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${id}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`
   )
 
-  return request.then(response => response.data)
+  return response.data
 }
 
-const getBaseData = (order, number, page) => {
-  const request = axios.get(
+const getBaseData = async (order, number, page) => {
+  const response = await axios.get(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${order}&per_page=${number}&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
   )
 
-  return request.then(response => response.data)
+  return response.data
 }
 
-const getMetadata = id => {
-  const request = axios.get(
+const getMetadata = async id => {
+  const response = await axios.get(
     `https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`
   )
 
-  return request.then(response => response.data)
+  return response.data
 }
 
-const getSparkline = id => {
-  const request = axios.get(
+const getSparkline = async id => {
+  const response = await axios.get(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${id}&sparkline=true&price_change_percentage=7d`
   )
 
-  return request.then(response => response.data[0])
+  return response.data[0]
 }
 
-const getMarketChart = (id, days) => {
-  const request = axios.get(
+const getMarketChart = async (id, days) => {
+  const response = await axios.get(
     `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}`
   )
 
-  return request.then(response => response.data)
+  return response.data
 }
 
-const getStats = id => {
-  const request = axios.get(
+const getStats = async id => {
+  const response = await axios.get(
     `https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`
   )
 
-  return request.then(response => response.data)
+  return response.data
 }
 
-const getGlobals = () => {
-  const request = axios.get('https://api.coingecko.com/api/v3/global')
+const getGlobals = async () => {
+  const response = await axios.get('https://api.coingecko.com/api/v3/global')
 
-  return request.then(response => response.data)
+  return response.data
 }
 
-const getBasicSearchResults = (page, number) => {
-  const request = axios.get(
+const getBasicSearchResults = async (page, number) => {
+  const response = await axios.get(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${number}&page=${page}&sparkline=false`
   )
 
-  return request.then(response => response.data)
+  return response.data
 }
 
 module.exports = {
