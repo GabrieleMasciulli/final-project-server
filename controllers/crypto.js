@@ -48,12 +48,22 @@ cryptoRouter.get('/info/:order/:number/:page', (req, res, next) => {
     .getBaseData(order, number, page)
     .then(cryptos => {
       const alteredCryptos = cryptos.map(crypto => {
+        const daily_trend =
+          crypto.price_change_percentage_24h_in_currency >= 0 ? 'up' : 'down'
         const sparklineData = crypto.sparkline_in_7d.price
-        const trend =
+        const weekly_trend =
           crypto.price_change_percentage_7d_in_currency > 0 ? 'up' : 'down'
-        const url = sparklineGenerator.generateSparkline(trend, sparklineData)
+        const url = sparklineGenerator.generateSparkline(
+          weekly_trend,
+          sparklineData
+        )
 
-        return { ...crypto, sparkline_url: url }
+        return {
+          ...crypto,
+          sparkline_url: url,
+          daily_trend: daily_trend,
+          weekly_trend: weekly_trend,
+        }
       })
       res.status(202).json(alteredCryptos)
     })
@@ -156,6 +166,8 @@ cryptoRouter.get('/stats/:id', (req, res, next) => {
       coinGecko.getGlobals().then(globals => {
         const daily_trend =
           stats.market_data.price_change_24h >= 0 ? 'up' : 'down'
+        const marketcap_daily_trend =
+          stats.market_data.market_cap.usd >= 0 ? 'up' : 'down'
         const vol_over_marketcap =
           stats.market_data.total_volume.usd / stats.market_data.market_cap.usd
         const market_dominance =
@@ -168,6 +180,7 @@ cryptoRouter.get('/stats/:id', (req, res, next) => {
           daily_trend: daily_trend,
           vol_over_marketcap: vol_over_marketcap,
           market_dominance: market_dominance,
+          marketcap_daily_trend: marketcap_daily_trend,
         }
         res.status(202).json(alteredStats)
       })
