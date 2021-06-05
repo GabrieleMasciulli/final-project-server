@@ -153,7 +153,24 @@ cryptoRouter.get('/stats/:id', (req, res, next) => {
   coinGecko
     .getStats(id)
     .then(stats => {
-      res.status(202).json(stats)
+      coinGecko.getGlobals().then(globals => {
+        const daily_trend =
+          stats.market_data.price_change_24h >= 0 ? 'up' : 'down'
+        const vol_over_marketcap =
+          stats.market_data.total_volume.usd / stats.market_data.market_cap.usd
+        const market_dominance =
+          (stats.market_data.market_cap.usd /
+            globals.data.total_market_cap.usd) *
+          100
+
+        const alteredStats = {
+          ...stats,
+          daily_trend: daily_trend,
+          vol_over_marketcap: vol_over_marketcap,
+          market_dominance: market_dominance,
+        }
+        res.status(202).json(alteredStats)
+      })
     })
     .catch(() => next({ name: 'CastError' }))
 })
