@@ -56,15 +56,20 @@ const portfolioAssets = (req, res, next) => {
 
         const percentage_profit_change = (profit / total_open_holding) * 100
 
+        const daily_trend = day_change_in_currency >= 0 ? 'up' : 'down'
+        const profit_trend = profit >= 0 ? 'up' : 'down'
+
         const asset = {
           coin: coin,
           last_price: last_price,
           day_change_in_currency: day_change_in_currency,
           percentage_day_change: percentage_day_change,
+          daily_trend: daily_trend,
           holding_in_crypto: holding_in_crypto,
           holding_in_currency: holding_in_currency,
           profit_in_currency: profit,
           percentage_profit_change: percentage_profit_change,
+          profit_trend: profit_trend,
           position,
         }
         return asset
@@ -118,12 +123,14 @@ const portfolioBalance = async (req, res) => {
   const day_change_in_currency = current_holdings - yesterdays_holdings
   const day_change_percentage =
     (day_change_in_currency * 100) / yesterdays_holdings
+  const daily_trend = day_change_in_currency >= 0 ? 'up' : 'down'
 
   res.status(200).json({
     holdings: current_holdings,
     yesterdays_holdings: yesterdays_holdings,
     day_change_in_currency: day_change_in_currency,
     day_change_percentage: day_change_percentage,
+    daily_trend: daily_trend,
   })
 }
 
