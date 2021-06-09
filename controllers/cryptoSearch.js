@@ -14,13 +14,15 @@ searchRouter.get('/first/:limit', async (req, res) => {
 //finding all documents which container query coming from user... using regular expression to make case-unsensitive filtering
 searchRouter.get('/:query', async (req, res) => {
   const query = req.params.query
-  const searchResults = SearchResult.find({
+  const searchResults = await SearchResult.find({
     $or: [
       { coingecko_id: { $regex: new RegExp(query, 'i') } },
       { symbol: { $regex: new RegExp(query, 'i') } },
       { name: { $regex: new RegExp(query, 'i') } },
     ],
   }).limit(100)
+
+  console.log(searchResults)
 
   res.status(200).json(searchResults)
 })
