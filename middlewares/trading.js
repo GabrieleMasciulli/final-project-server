@@ -193,7 +193,7 @@ const newTrade = async (req, res) => {
   }
 
   await Position.updateOne(
-    { $and: [{ coin_id: body.coin_id }, { user: body.user_id }] },
+    { $and: [{ coin_id: body.coin_id }, { user: userId }] },
     { $push: { transactions: transaction } }
   )
 
@@ -203,10 +203,18 @@ const newTrade = async (req, res) => {
   return
 }
 
+const deleteAsset = async (req, res) => {
+  const coinId = req.params.coin
+
+  await Position.findByIdAndRemove(coinId)
+  res.status(204).end()
+}
+
 module.exports = {
   newTrade,
   getAssets,
   getAssetsWithAnalysis,
   getPortfolioBalance,
   getPortfolioPieChart,
+  deleteAsset,
 }

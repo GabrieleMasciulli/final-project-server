@@ -21,10 +21,17 @@ positionsRouter.get(
 positionsRouter.get(
   '/pie',
   [authJwt.verifyToken],
-  positionsMethods.getPortfolioBalance
+  positionsMethods.getPortfolioPieChart
 )
 
 //adding new trade to either current or new position
 positionsRouter.post('/', [authJwt.verifyToken], positionsMethods.newTrade)
+
+//deleting position from account ( transactions included)
+positionsRouter.delete(
+  '/:coin',
+  [authJwt.verifyToken],
+  positionsMethods.deleteAsset
+)
 
 module.exports = positionsRouter
