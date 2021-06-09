@@ -12,6 +12,18 @@ positionsRouter.get(
   positionsMethods.getAssetsWithAnalysis
 )
 
+positionsRouter.get(
+  '/balance',
+  [authJwt.verifyToken],
+  positionsMethods.getPortfolioBalance
+)
+
+positionsRouter.get(
+  '/pie',
+  [authJwt.verifyToken],
+  positionsMethods.getPortfolioBalance
+)
+
 //adding new trade to either current or new position
 positionsRouter.post('/', [authJwt.verifyToken], positionsMethods.newTrade)
 
