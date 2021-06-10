@@ -81,7 +81,7 @@ const signin = (req, res) => {
       var passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
 
       if (!passwordIsValid) {
-        return res.status(401).send({
+        return res.status(401).json({
           accessToken: null,
           message: 'Invalid Password!',
         })
@@ -96,7 +96,7 @@ const signin = (req, res) => {
       for (let i = 0; i < user.roles.length; i++) {
         authorities.push('ROLE_' + user.roles[i].name.toUpperCase())
       }
-      res.status(200).send({
+      res.status(200).json({
         id: user._id,
         username: user.username,
         email: user.email,

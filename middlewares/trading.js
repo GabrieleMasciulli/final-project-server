@@ -205,9 +205,11 @@ const newTrade = async (req, res) => {
 
 const deleteAsset = async (req, res) => {
   const coinId = req.params.coin
-
   await Position.findByIdAndRemove(coinId)
-  res.status(204).end()
+
+  res
+    .status(200)
+    .json({ message: 'Asset successfully removed from portfolio!' })
 }
 
 module.exports = {
