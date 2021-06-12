@@ -9,10 +9,9 @@ const isNewPosition = async req => {
     $and: [{ coin_id: body.coin_id }, { user: userId }],
   })
 
-  if (!position) {
-    return true
-  }
-  return false
+  if (position) {
+    return false
+  } else return true
 }
 
 module.exports = {

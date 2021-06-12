@@ -178,7 +178,9 @@ const newTrade = async (req, res) => {
   const transaction = body.transaction
   const userId = req.userId
 
-  if (tradingHelper.isNewPosition(req)) {
+  const isNewPosition = await tradingHelper.isNewPosition(req)
+
+  if (isNewPosition) {
     const position = new Position({
       type: body.type,
       coin_id: body.coin_id,

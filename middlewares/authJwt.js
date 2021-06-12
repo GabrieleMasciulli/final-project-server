@@ -12,8 +12,8 @@ const verifyToken = (req, res, next) => {
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      console.log(err)
-      return res.status(401).send({ message: 'Unauthorized!' })
+      next(err)
+      return
     }
     req.userId = decoded.id
     next()
