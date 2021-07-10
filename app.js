@@ -19,6 +19,7 @@ const positionsRouter = require('./controllers/positions')
 
 //middlewares
 const devUtilsMiddleware = require('./utils/dev_utils')
+const { authJwt } = require('./middlewares/auth.index')
 
 //utils
 const logger = require('./utils/logger')
@@ -70,7 +71,7 @@ app.use('/api/test', authorizationRouter)
 app.use('/api/global', globalDataRouter)
 app.use('/api/search', searchCryptosRouter)
 app.use('/api/transaction', transactionRouter)
-app.use('/api/positions', positionsRouter)
+app.use('/api/positions', authJwt.verifyToken, positionsRouter)
 
 app.use(devUtilsMiddleware.unknownEndpoint)
 app.use(devUtilsMiddleware.errorHandler)
